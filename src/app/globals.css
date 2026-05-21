@@ -690,8 +690,46 @@ a {
   
   .mobile-only { display: flex !important; }
   .desktop-only { display: none !important; }
+  
+  .newsletter-card-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  
+  @media (max-width: 768px) {
+    .newsletter-card-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .stat-card-responsive {
+      border-right: none !important;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 20px;
+      padding-right: 0 !important;
+    }
+    .stat-card-responsive:last-child {
+      border-bottom: none !important;
+      padding-bottom: 0;
+    }
+    .eco-card {
+      min-height: auto !important;
+      padding-bottom: 300px !important;
+    }
+    .eco-mob-img {
+      width: 200px !important;
+      height: 320px !important;
+      bottom: 0 !important;
+      right: 10px !important;
+    }
+  }
 }
 
 .mobile-only { display: none; }
 .desktop-only { display: flex; }
+
+.newsletter-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+}
 
