@@ -442,25 +442,24 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
         </motion.div>
 
         {/* ─── RIGHT: Device Carousel ─── */}
-        <motion.div style={{ x: sx, y: sy, position: "relative", height: "82vh", minHeight: 560, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <motion.div style={{ x: sx, y: sy, position: "relative", height: "80vh", minHeight: 620, display: "flex", alignItems: "center", justifyContent: "center" }}>
 
           {/* Inner spotlight */}
           <motion.div
-            animate={{ background: `radial-gradient(ellipse 50% 60% at 50% 50%, rgba(${device.accentRgb},0.08) 0%, transparent 70%)` }}
+            animate={{ background: `radial-gradient(ellipse 50% 60% at 50% 50%, rgba(${device.accentRgb},0.09) 0%, transparent 70%)` }}
             transition={{ duration: 1.2 }}
             style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
           />
 
           {/* Halo ring */}
           <motion.div
-            animate={{ borderColor: `rgba(${device.accentRgb},0.1)` }}
+            animate={{ borderColor: `rgba(${device.accentRgb},0.12)` }}
             transition={{ duration: 1.2 }}
-            style={{ position: "absolute", width: 380, height: 380, borderRadius: "50%", border: "1px solid", top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none" }}
+            style={{ position: "absolute", width: 420, height: 420, borderRadius: "50%", border: "1px solid", top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none" }}
           />
 
           {/* ─── 3-Device Coverflow Carousel ─── */}
-          {/* overflow:visible so flanking devices are fully visible */}
-          <div style={{ position: "relative", width: 340, height: "min(700px, 78vh)", perspective: "1200px", overflow: "visible" }}>
+          <div style={{ position: "relative", width: 380, height: 760, perspective: "1400px" }}>
             {devices.map((d, idx) => {
               const n = devices.length;
               let offset = ((idx - active) % n + n) % n;
@@ -473,15 +472,13 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
               return (
                 <motion.div key={d.id}
                   animate={{
-                    // ← KEY FIX: flanks at ±140px (was ±310px), visible within viewport
-                    x: isActive ? 0 : isLeft ? -145 : 145,
-                    rotateY: isActive ? 0 : isLeft ? 16 : -16,
-                    // Center is full scale; flanks clearly smaller but visible (was 0.25 opacity → now 0.55)
-                    scale: isActive ? 1 : 0.58,
-                    opacity: isActive ? 1 : 0.55,
-                    z: isActive ? 0 : -80,
+                    x: isActive ? 0 : isLeft ? -310 : 310,
+                    rotateY: isActive ? 0 : isLeft ? 28 : -28,
+                    scale: isActive ? 1 : 0.62,
+                    opacity: isActive ? 1 : 0.25,
+                    z: isActive ? 0 : -200,
                   }}
-                  transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d", cursor: isActive ? "default" : "pointer" }}
                   onClick={() => !isActive && advance(isRight ? 1 : -1)}
                 >
@@ -489,10 +486,10 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
                     style={{
                       objectFit: "contain",
                       filter: isActive
-                        ? `drop-shadow(0 0 60px rgba(${d.accentRgb},0.28)) drop-shadow(0 40px 80px rgba(0,0,0,0.9))`
-                        : `drop-shadow(0 8px 24px rgba(0,0,0,0.5)) brightness(0.7)`,
+                        ? `drop-shadow(0 0 70px rgba(${d.accentRgb},0.3)) drop-shadow(0 50px 90px rgba(0,0,0,0.85))`
+                        : "none",
                     }}
-                    sizes="380px" priority={isActive}
+                    sizes="400px" priority={isActive}
                   />
                 </motion.div>
               );
