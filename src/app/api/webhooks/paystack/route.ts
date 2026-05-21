@@ -2,15 +2,13 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize a supabase client with the Service Role key to bypass RLS
-// because webhooks are unauthenticated requests from Paystack.
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-const secret = process.env.PAYSTACK_SECRET_KEY || 'sk_test_placeholder';
-
 export async function POST(req: Request) {
+  // Initialize inside handler so env vars are only read at request time, not build time
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  const secret = process.env.PAYSTACK_SECRET_KEY || 'sk_test_placeholder';
+
   try {
     const rawBody = await req.text();
     const signature = req.headers.get('x-paystack-signature');
@@ -26,8 +24,8 @@ export async function POST(req: Request) {
 
     // Handle Charge Success Event
     if (event.event === 'charge.success') {
-      const { reference, amount } = event.data;
-      
+      const { reference } = event.data;
+
       // Find the order by reference
       const { data: order, error: findError } = await supabase
         .from('orders')
@@ -40,12 +38,12 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Order not found' }, { status: 404 });
       }
 
-      // If it's already paid/processing, just return success
+      // If already paid/processing, skip
       if (order.status !== 'pending') {
         return NextResponse.json({ success: true, message: 'Already processed' });
       }
 
-      // Update Order Status to 'paid' (or 'processing')
+      // Update Order Status to 'paid'
       const { error: updateError } = await supabase
         .from('orders')
         .update({ status: 'paid', updated_at: new Date().toISOString() })
