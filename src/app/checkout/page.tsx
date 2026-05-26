@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-const NIGERIAN_STATES = ['Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Ebonyi','Edo','Ekiti','Enugu','Gombe','Imo','Jigawa','Kaduna','Kano','Katsina','Kebbi','Kogi','Kwara','Lagos','Nasarawa','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara','FCT - Abuja'];
+const NIGERIAN_STATES = ['Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara', 'FCT - Abuja'];
 
 export default function CheckoutPage() {
   const { items, clear } = useCart();
@@ -40,7 +40,7 @@ export default function CheckoutPage() {
     script.async = true;
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const applyDiscount = async () => {
@@ -57,9 +57,9 @@ export default function CheckoutPage() {
 
   const handlePaystack = async () => {
     if (!window.PaystackPop) { alert('Payment system loading. Please try again.'); return; }
-    
+
     setLoading(true);
-    
+
     try {
       // 1. Create order securely on the server
       const res = await fetch('/api/checkout', {
@@ -73,9 +73,9 @@ export default function CheckoutPage() {
           notes: form.notes
         })
       });
-      
+
       const data = await res.json();
-      
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Failed to initialize checkout');
       }
@@ -123,10 +123,10 @@ export default function CheckoutPage() {
   const inp = { width: '100%', background: '#0d0d0d', border: '1px solid #1d1d1d', color: '#fff', padding: '13px', borderRadius: '10px', outline: 'none', fontSize: '14px', fontFamily: 'inherit', boxSizing: 'border-box' as const, transition: 'border-color 0.2s' };
 
   return (
-    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 24px' }}>
+    <div style={{ maxWidth: 'var(--max-w, 1380px)', margin: '0 auto', padding: 'clamp(40px, 8vw, 72px) clamp(16px, 5vw, 40px)' }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <Link href="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginBottom: '32px' }}>
+      <div style={{ textAlign: 'center', marginBottom: 'clamp(28px, 5vw, 48px)' }}>
+        <Link href="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginBottom: '24px' }}>
           <span style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.8px' }}>zeuria</span>
           <span style={{ fontSize: '9px', fontWeight: 700, color: '#c8782a', position: 'relative', top: '-5px' }}>®</span>
         </Link>
@@ -137,7 +137,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '64px', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))', gap: 'clamp(24px, 5vw, 64px)', alignItems: 'start' }}>
         {/* Form */}
         <div>
           {step === 'info' ? (
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Order Summary Sidebar */}
-        <div style={{ background: '#080808', border: '1px solid #141414', borderRadius: '20px', padding: '32px', position: 'sticky', top: '80px' }}>
+        <div style={{ background: '#080808', border: '1px solid #141414', borderRadius: '20px', padding: 'clamp(20px, 4vw, 32px)', position: 'sticky', top: '80px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '24px' }}>Order Summary</h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>

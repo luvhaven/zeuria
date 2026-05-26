@@ -40,11 +40,11 @@ function OrderSuccessContent() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-          <Link href="/account/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fff', color: '#000', padding: '14px 24px', borderRadius: '10px', textDecoration: 'none', fontSize: '14px', fontWeight: 700 }}>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href="/account/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fff', color: '#000', padding: '14px 24px', borderRadius: '10px', textDecoration: 'none', fontSize: '14px', fontWeight: 700, flex: "1 1 auto", justifyContent: "center" }}>
             Track Orders <ArrowRight size={14} />
           </Link>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#111', color: '#888', border: '1px solid #222', padding: '14px 24px', borderRadius: '10px', textDecoration: 'none', fontSize: '14px' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#111', color: '#888', border: '1px solid #222', padding: '14px 24px', borderRadius: '10px', textDecoration: 'none', fontSize: '14px', flex: "1 1 auto", justifyContent: "center" }}>
             <Home size={14} /> Home
           </Link>
         </div>

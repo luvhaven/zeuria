@@ -20,7 +20,7 @@ export default async function BrandPage(props: { params: Promise<{ slug: string 
   const params = await props.params;
   const brandSlug = params.slug;
   const allProducts = await getProductsByBrand(brandSlug.toUpperCase());
-  
+
   if (!allProducts || allProducts.length === 0) {
     notFound();
   }
@@ -29,15 +29,15 @@ export default async function BrandPage(props: { params: Promise<{ slug: string 
   const brandName = brandSlug.charAt(0).toUpperCase() + brandSlug.slice(1);
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "60px 24px" }}>
-      <div style={{ marginBottom: "48px" }}>
+    <div style={{ maxWidth: "var(--max-w, 1380px)", margin: "0 auto", padding: "clamp(64px, 10vw, 96px) clamp(16px, 5vw, 64px)" }}>
+      <div style={{ marginBottom: "clamp(32px, 5vw, 64px)" }}>
         <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2px", color: "#c8782a", textTransform: "uppercase", marginBottom: "12px" }}>
           {brandName}
         </div>
-        <h1 style={{ fontSize: "64px", fontWeight: 700, letterSpacing: "-3px", lineHeight: 1.0, marginBottom: "16px" }}>
+        <h1 style={{ fontSize: "clamp(48px, 8vw, 80px)", fontWeight: 800, letterSpacing: "clamp(-2px, -0.04em, -4px)", lineHeight: 1.0, marginBottom: "16px" }}>
           {brandName}.
         </h1>
-        <p style={{ fontSize: "14px", color: "#999" }}>
+        <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "#999" }}>
           Engineered by <span style={{ color: "#ccc" }}>{brandName}</span>. Sold in <span style={{ color: "#ccc" }}>Naira</span>.
         </p>
       </div>

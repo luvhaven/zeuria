@@ -208,139 +208,166 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
         ref={heroRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        style={{ position: "relative", height: "100svh", overflow: "hidden", background: "#000", display: "flex", flexDirection: "column" }}
+        style={{
+          position: "relative",
+          height: "100dvh", // use dvh for perfect mobile fit
+          minHeight: 560,
+          overflow: "hidden",
+          background: "#000",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
 
         {/* Accent orb */}
         <motion.div
-          animate={{ background: `radial-gradient(circle, rgba(${device.accentRgb},0.22) 0%, transparent 65%)` }}
+          animate={{ background: `radial-gradient(circle, rgba(${device.accentRgb},0.2) 0%, transparent 75%)` }}
           transition={{ duration: 1.4 }}
           style={{ position: "absolute", inset: 0, filter: "blur(60px)", zIndex: 1, pointerEvents: "none" }}
         />
 
         {/* Top ticker bar */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10, borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)", padding: "9px 0", overflow: "hidden" }}>
-          <div style={{ display: "flex", animation: "heroTicker 28s linear infinite", whiteSpace: "nowrap" }}>
-            {[...TICKER, ...TICKER].map((item, i) => (
-              <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 20, padding: "0 20px" }}>
-                <span style={{ fontSize: 9, color: "#555", letterSpacing: "1.5px", fontWeight: 600, textTransform: "uppercase" }}>{item}</span>
-                <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#333", flexShrink: 0 }} />
-              </span>
-            ))}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+          background: "rgba(0,0,0,0.4)", backdropFilter: "blur(12px)",
+          padding: "env(safe-area-inset-top, 0px) 0 0 0", // handles notch if header is transparent
+        }}>
+          <div style={{ padding: "8px 0", overflow: "hidden" }}>
+            <div style={{ display: "flex", animation: "heroTicker 28s linear infinite", whiteSpace: "nowrap" }}>
+              {[...TICKER, ...TICKER].map((item, i) => (
+                <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 20, padding: "0 20px" }}>
+                  <span style={{ fontSize: 10, color: "#777", letterSpacing: "1.5px", fontWeight: 600, textTransform: "uppercase" }}>{item}</span>
+                  <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#444", flexShrink: 0 }} />
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Device Image — full-screen */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 2 }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`mob-device-${active}`}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: "absolute", inset: 0 }}
-            >
-              <Image
-                src={device.image} alt={device.name} fill priority
-                style={{ objectFit: "contain", padding: "52px 44px 210px" }}
-                sizes="100vw"
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Bottom gradient overlay */}
+        {/* Bottom gradient overlay for text legibility */}
         <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: "66%",
-          background: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 32%, rgba(0,0,0,0.6) 58%, transparent 100%)",
-          zIndex: 3, pointerEvents: "none",
+          position: "absolute", bottom: 0, left: 0, right: 0, height: "60%",
+          background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 35%, transparent 100%)",
+          zIndex: 2, pointerEvents: "none",
         }} />
 
-        {/* Text content at bottom */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 4, padding: "0 22px 24px" }}>
-          {/* Brand badge */}
-          <AnimatePresence mode="wait">
-            <motion.div key={`mob-brand-${active}`}
-              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 10 }}
-            >
-              <span style={{ width: 4, height: 4, borderRadius: "50%", background: device.accent }} />
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "2.5px", color: device.accent, textTransform: "uppercase" }}>{device.brand}</span>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Headline */}
-          <AnimatePresence mode="wait">
-            <motion.div key={`mob-hl-${active}`}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}
-            >
-              <h1 ref={headlineRef} style={{
-                fontSize: "clamp(32px, 9.5vw, 50px)", fontWeight: 800, letterSpacing: "-2px",
-                lineHeight: 0.9, color: "#fff", whiteSpace: "pre-line", marginBottom: 10,
-              }}>
-                {device.headline}
-              </h1>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Sub */}
-          <AnimatePresence mode="wait">
-            <motion.p key={`mob-sub-${active}`}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
-              style={{ fontSize: 13, color: "#666", lineHeight: 1.55, marginBottom: 14, fontWeight: 300, maxWidth: 300 }}
-            >
-              {device.sub}
-            </motion.p>
-          </AnimatePresence>
-
-          {/* Price */}
-          <AnimatePresence mode="wait">
-            <motion.div key={`mob-price-${active}`}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, delay: 0.08 }}
-              style={{ marginBottom: 18 }}
-            >
-              <span style={{ fontSize: 11, color: "#555", marginRight: 5 }}>from</span>
-              <span style={{ fontSize: 22, fontWeight: 700, color: device.accent, letterSpacing: "-0.5px" }}>{device.price}</span>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* CTAs */}
-          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-            <Link href={`/shop/${device.id}`} style={{
-              flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              background: "#fff", color: "#000", padding: "14px 18px", borderRadius: "100px",
-              fontSize: 14, fontWeight: 700, textDecoration: "none",
-            }}>
-              Shop Now <ArrowUpRight size={15} />
-            </Link>
-            <Link href="/shop" style={{
-              display: "flex", alignItems: "center", justifyContent: "center", padding: "14px 18px",
-              border: "1px solid rgba(255,255,255,0.16)", color: "#bbb", borderRadius: "100px",
-              fontSize: 13, fontWeight: 500, textDecoration: "none", whiteSpace: "nowrap",
-            }}>
-              All Devices
-            </Link>
+        {/* Main Flex Container */}
+        <div style={{ position: "relative", zIndex: 5, flex: 1, display: "flex", flexDirection: "column", paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
+          
+          {/* Top Image Area: Flexes to fill available space automatically */}
+          <div style={{ flex: "1 1 auto", position: "relative", minHeight: 0, marginTop: 45 }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`mob-device-${active}`}
+                initial={{ opacity: 0, scale: 1.05, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                style={{ position: "absolute", inset: "20px clamp(20px, 8vw, 40px) 0" }} // Responsive bounding box
+              >
+                <Image
+                  src={device.image} alt={device.name} fill priority
+                  style={{
+                    objectFit: "contain",
+                    objectPosition: "center bottom", // Anchors device nicely above text
+                    filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(${device.accentRgb}, 0.2))`
+                  }}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Carousel controls */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-            <button onClick={() => advance(-1)} style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "50%", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#555" }}>
-              <ChevronLeft size={13} />
-            </button>
-            {devices.map((_, i) => (
-              <motion.div key={i}
-                animate={{ width: i === active ? 18 : 5, background: i === active ? device.accent : "rgba(255,255,255,0.15)" }}
+          {/* Bottom Text Area: Fixed to content size */}
+          <div style={{ flex: "0 0 auto", padding: "0 clamp(20px, 6vw, 32px)", paddingTop: 20 }}>
+            {/* Brand badge */}
+            <AnimatePresence mode="wait">
+              <motion.div key={`mob-brand-${active}`}
+                initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{ height: 5, borderRadius: 3, cursor: "pointer" }}
-                onClick={() => i !== active && advance(i > active ? 1 : -1)}
-              />
-            ))}
-            <button onClick={() => advance(1)} style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "50%", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#555" }}>
-              <ChevronRight size={13} />
-            </button>
+                style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}
+              >
+                <span style={{ width: 4, height: 4, borderRadius: "50%", background: device.accent }} />
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", color: device.accent, textTransform: "uppercase" }}>{device.brand}</span>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Headline */}
+            <AnimatePresence mode="wait">
+              <motion.div key={`mob-hl-${active}`}
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
+              >
+                <h1 ref={headlineRef} style={{
+                  fontSize: "clamp(36px, 10vw, 54px)", fontWeight: 800, letterSpacing: "-1.5px",
+                  lineHeight: 0.95, color: "#fff", whiteSpace: "pre-line", marginBottom: 12,
+                }}>
+                  {device.headline}
+                </h1>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Sub */}
+            <AnimatePresence mode="wait">
+              <motion.p key={`mob-sub-${active}`}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
+                style={{ fontSize: "clamp(13px, 4vw, 15px)", color: "#aaa", lineHeight: 1.5, marginBottom: 16, fontWeight: 300, maxWidth: "100%" }}
+              >
+                {device.sub}
+              </motion.p>
+            </AnimatePresence>
+
+            {/* Price */}
+            <AnimatePresence mode="wait">
+              <motion.div key={`mob-price-${active}`}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, delay: 0.12 }}
+                style={{ marginBottom: 20 }}
+              >
+                <span style={{ fontSize: 12, color: "#666", marginRight: 6 }}>from</span>
+                <span style={{ fontSize: 24, fontWeight: 700, color: device.accent, letterSpacing: "-0.5px" }}>{device.price}</span>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* CTAs */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
+              <Link href={`/shop/${device.id}`} style={{
+                flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                background: "#fff", color: "#000", padding: "14px 18px", borderRadius: "100px",
+                fontSize: 14, fontWeight: 700, textDecoration: "none",
+                boxShadow: `0 4px 14px rgba(255,255,255,0.15)`
+              }}>
+                Shop Now <ArrowUpRight size={16} />
+              </Link>
+              <Link href="/shop" style={{
+                display: "flex", alignItems: "center", justifyContent: "center", padding: "14px 20px",
+                border: "1px solid rgba(255,255,255,0.12)", color: "#ccc", borderRadius: "100px",
+                fontSize: 14, fontWeight: 500, textDecoration: "none", whiteSpace: "nowrap",
+                background: "rgba(255,255,255,0.02)"
+              }}>
+                Explore
+              </Link>
+            </div>
+
+            {/* Carousel controls */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+              <button onClick={() => advance(-1)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "50%", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#888" }}>
+                <ChevronLeft size={16} />
+              </button>
+              <div style={{ display: "flex", gap: 6 }}>
+                {devices.map((_, i) => (
+                  <motion.div key={i}
+                    animate={{ width: i === active ? 24 : 6, background: i === active ? device.accent : "rgba(255,255,255,0.15)" }}
+                    transition={{ duration: 0.3 }}
+                    style={{ height: 6, borderRadius: 3, cursor: "pointer" }}
+                    onClick={() => i !== active && advance(i > active ? 1 : -1)}
+                  />
+                ))}
+              </div>
+              <button onClick={() => advance(1)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "50%", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#888" }}>
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </section>

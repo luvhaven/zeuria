@@ -48,8 +48,8 @@ function CelestialGiftSection() {
 
   useGSAP(() => {
     // Reveal animation
-    gsap.fromTo(".celestial-content", 
-      { opacity: 0, y: 40 }, 
+    gsap.fromTo(".celestial-content",
+      { opacity: 0, y: 40 },
       { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: containerRef.current, start: "top 70%" } }
     );
 
@@ -60,7 +60,7 @@ function CelestialGiftSection() {
     if (!ctx) return;
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
-    
+
     const onResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -84,7 +84,7 @@ function CelestialGiftSection() {
       const rect = containerRef.current.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
-      
+
       // Move orb
       gsap.to(orbRef.current, { x: mouseX, y: mouseY, duration: 0.8, ease: "power2.out" });
     };
@@ -98,7 +98,7 @@ function CelestialGiftSection() {
         const dx = mouseX - s.x;
         const dy = mouseY - s.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (dist < 180) {
           s.x -= (dx / dist) * 0.3;
           s.y -= (dy / dist) * 0.3;
@@ -132,7 +132,7 @@ function CelestialGiftSection() {
     <section ref={containerRef} className="celestial-container" style={{ minHeight: "560px", height: "clamp(560px, 75vh, 700px)" }}>
       <canvas ref={canvasRef} className="celestial-canvas" />
       <div ref={orbRef} className="celestial-orb" />
-      
+
       <div className="celestial-content">
         <div className="celestial-box" style={{ width: "clamp(100px, 12vw, 140px)", height: "clamp(100px, 12vw, 140px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
           <Image src="/iphone17pro.png" alt="Gift" width={80} height={80} style={{ objectFit: "contain", zIndex: 2 }} />
@@ -186,7 +186,7 @@ export default function HomePageClient({ arrivals, featured = [] }: { arrivals: 
     // Stat counters animate up
     gsap.utils.toArray<HTMLElement>(".stat-number").forEach(el => {
       const targetVal = parseInt(el.getAttribute("data-target") || "0", 10);
-      gsap.fromTo(el, 
+      gsap.fromTo(el,
         { textContent: 0 },
         {
           textContent: targetVal,
@@ -467,7 +467,7 @@ export default function HomePageClient({ arrivals, featured = [] }: { arrivals: 
                   onFocus={e => (e.target.style.borderColor = "rgba(200,164,110,0.4)")}
                   onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
                 />
-                <button 
+                <button
                   onClick={() => alert("Thanks for subscribing! Check your email for confirmation.")}
                   style={{
                     background: "#fff",

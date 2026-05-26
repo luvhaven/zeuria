@@ -28,7 +28,7 @@ type CartCtx = {
 
 const CartContext = createContext<CartCtx>({
   items: [], count: 0, open: false,
-  add: () => {}, remove: () => {}, updateQty: () => {}, toggle: () => {}, close: () => {}, clear: () => {},
+  add: () => { }, remove: () => { }, updateQty: () => { }, toggle: () => { }, close: () => { }, clear: () => { },
 });
 
 export function useCart() { return useContext(CartContext); }
@@ -43,7 +43,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     setMounted(true);
     const saved = localStorage.getItem(CART_KEY);
     if (saved) {
-      try { setItems(JSON.parse(saved)); } catch (e) {}
+      try { setItems(JSON.parse(saved)); } catch (e) { }
     }
   }, []);
 
@@ -114,19 +114,21 @@ function CartDrawer() {
         exit={{ x: "100%" }}
         transition={{ type: "spring", stiffness: 320, damping: 32 }}
         style={{
-          position: "fixed", top: 0, right: 0, bottom: 0, width: "100%", maxWidth: "420px",
+          position: "fixed", top: 0, right: 0, bottom: 0,
+          width: "min(100vw, 420px)",
           background: "#080808", borderLeft: "1px solid #1a1a1a",
           zIndex: 201, display: "flex", flexDirection: "column",
+          paddingTop: "env(safe-area-inset-top, 0px)",
         }}
       >
         {/* Header */}
-        <div style={{ padding: "20px 24px", borderBottom: "1px solid #141414", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
+        <div style={{ padding: "clamp(14px,3vw,20px) clamp(16px,4vw,24px)", borderBottom: "1px solid #141414", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
           <span style={{ fontSize: "15px", fontWeight: 600, color: "#fff" }}>Your Bag ({count})</span>
           <button onClick={close} style={{ background: "none", border: "none", color: "#555", cursor: "pointer", fontSize: "22px", lineHeight: 1, padding: "2px 6px", display: "flex", alignItems: "center" }}>×</button>
         </div>
 
         {/* Items */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "16px clamp(14px,4vw,24px)", WebkitOverflowScrolling: "touch" }}>
           {items.length === 0 ? (
             <div style={{ textAlign: "center", padding: "80px 0", color: "#555" }}>
               <div style={{ fontSize: "44px", marginBottom: "16px" }}>🛍️</div>
@@ -181,7 +183,7 @@ function CartDrawer() {
 
         {/* Footer CTA */}
         {items.length > 0 && (
-          <div style={{ padding: "20px 24px", borderTop: "1px solid #141414", flexShrink: 0 }}>
+          <div style={{ padding: "clamp(14px,3vw,20px) clamp(14px,4vw,24px)", paddingBottom: "max(clamp(14px,3vw,20px), env(safe-area-inset-bottom))", borderTop: "1px solid #141414", flexShrink: 0 }}>
             {/* Totals */}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
