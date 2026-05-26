@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import SplitReveal from "@/components/SplitReveal";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import type { ProductListItem } from "@/data/products";
@@ -140,9 +141,13 @@ function CelestialGiftSection() {
         <div style={{ fontSize: 9, letterSpacing: "3px", color: "#c8782a", fontWeight: 700, textTransform: "uppercase", marginBottom: 16 }}>
           Zeuria Gifting
         </div>
-        <h2 style={{ fontSize: "clamp(32px, 5.5vw, 76px)", fontWeight: 800, letterSpacing: "-2.5px", lineHeight: 0.95, color: "#fff", marginBottom: 20 }}>
-          Wrap the future<br />in starlight.
-        </h2>
+        <SplitReveal
+          text="Wrap the future in starlight."
+          tag="h2"
+          style={{ fontSize: "clamp(32px, 5.5vw, 76px)", fontWeight: 800, letterSpacing: "-2.5px", lineHeight: 0.95, color: "#fff", marginBottom: 20, justifyContent: "center" }}
+          delay={0.1}
+          stagger={0.025}
+        />
         <p style={{ fontSize: "clamp(13px, 1.5vw, 16px)", fontWeight: 300, color: "rgba(255,255,255,0.6)", maxWidth: 440, margin: "0 auto", lineHeight: 1.65 }}>
           Surprise someone special with the ultimate technology. Select any device, add a personalized celestial note, and we'll handle the magic.
         </p>

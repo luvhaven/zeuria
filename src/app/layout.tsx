@@ -4,7 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartProvider from "@/components/CartProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
+import TransitionLayout from "@/components/TransitionLayout";
 import { Toaster } from "react-hot-toast";
+import { ViewTransitions } from "next-view-transitions";
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
@@ -73,31 +76,36 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const products = await getProducts();
 
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap" rel="stylesheet" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      </head>
-      <body>
-        <SmoothScroll>
-          <CartProvider>
-            <Navbar products={products} />
-            <main>{children}</main>
-            <Footer />
-            <Toaster
-              position="bottom-right"
-              toastOptions={{
-                style: { background: '#111', color: '#fff', border: '1px solid #222', fontSize: '13px', borderRadius: '10px' },
-                success: { iconTheme: { primary: '#22c55e', secondary: '#000' } },
-                error: { iconTheme: { primary: '#ef4444', secondary: '#000' } },
-              }}
-            />
-          </CartProvider>
-        </SmoothScroll>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en">
+        <head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap" rel="stylesheet" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        </head>
+        <body>
+          <SmoothScroll>
+            <CartProvider>
+              <Navbar products={products} />
+              <TransitionLayout>
+                <main>{children}</main>
+              </TransitionLayout>
+              <Footer />
+              <Toaster
+                position="bottom-right"
+                toastOptions={{
+                  style: { background: '#111', color: '#fff', border: '1px solid #222', fontSize: '13px', borderRadius: '10px' },
+                  success: { iconTheme: { primary: '#22c55e', secondary: '#000' } },
+                  error: { iconTheme: { primary: '#ef4444', secondary: '#000' } },
+                }}
+              />
+            </CartProvider>
+            <CustomCursor />
+          </SmoothScroll>
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

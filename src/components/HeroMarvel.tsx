@@ -9,6 +9,9 @@ import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProductListItem } from "@/data/products";
+import { lazy, Suspense } from "react";
+
+const PhoneCanvas3D = lazy(() => import("@/components/PhoneCanvas3D"));
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
@@ -255,7 +258,7 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
 
         {/* Main Flex Container */}
         <div style={{ position: "relative", zIndex: 5, flex: 1, display: "flex", flexDirection: "column", paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
-          
+
           {/* Top Image Area: Flexes to fill available space automatically */}
           <div style={{ flex: "1 1 auto", position: "relative", minHeight: 0, marginTop: 45 }}>
             <AnimatePresence mode="wait">
@@ -468,8 +471,13 @@ export default function HeroMarvel({ items = [] }: { items?: ProductListItem[] }
           </motion.div>
         </motion.div>
 
-        {/* ─── RIGHT: Device Carousel ─── */}
+        {/* ─── RIGHT: Device Carousel (+ 3D Background) ─── */}
         <motion.div style={{ x: sx, y: sy, position: "relative", height: "80vh", minHeight: 620, display: "flex", alignItems: "center", justifyContent: "center" }}>
+
+          {/* 3D Interactive Phone Canvas (atmospheric backdrop) */}
+          <Suspense fallback={null}>
+            <PhoneCanvas3D style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.55, pointerEvents: "none" }} />
+          </Suspense>
 
           {/* Inner spotlight */}
           <motion.div
