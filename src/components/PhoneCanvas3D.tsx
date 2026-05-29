@@ -69,7 +69,7 @@ export default function PhoneCanvas3D({ className, style }: { className?: string
                 camera={{ position: [0, 0, 4], fov: 42 }}
                 gl={{ antialias: true, alpha: true }}
                 style={{ background: "transparent" }}
-                shadows
+                shadows={{ type: THREE.PCFShadowMap }}
             >
                 <Suspense fallback={null}>
                     <ambientLight intensity={0.15} />

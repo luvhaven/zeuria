@@ -1,13 +1,22 @@
 "use client";
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle, Package, ArrowRight, Home } from 'lucide-react';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
-  const ref = searchParams.get('ref') || 'ZR-XXXXXXX';
+  const router = useRouter();
+  const ref = searchParams.get('ref');
+
+  useEffect(() => {
+    if (!ref) {
+      router.replace('/shop');
+    }
+  }, [ref, router]);
+
+  if (!ref) return null;
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>

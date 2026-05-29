@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Inter_Tight, Fraunces } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -6,10 +7,14 @@ import CartProvider from "@/components/CartProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import TransitionLayout from "@/components/TransitionLayout";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
 import { Toaster } from "react-hot-toast";
 import { ViewTransitions } from "next-view-transitions";
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+
+const interTight = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "800"], display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], weight: ["400", "500"], display: "swap" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
@@ -55,7 +60,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: "#000000",
+  themeColor: "#020303",
 };
 
 import { getProducts } from "@/lib/data/products";
@@ -77,33 +82,46 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <ViewTransitions>
-      <html lang="en">
+      <html lang="en" className={`${interTight.style.fontFamily} ${fraunces.style.fontFamily}`}>
         <head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap" rel="stylesheet" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+          <style dangerouslySetInnerHTML={{
+            __html: `
+            :root {
+              --sans: ${interTight.style.fontFamily}, ui-sans-serif, system-ui, -apple-system, sans-serif;
+              --serif: ${fraunces.style.fontFamily}, Georgia, serif;
+            }
+          `}} />
         </head>
         <body>
           <SmoothScroll>
             <CartProvider>
+              <AnalyticsProvider />
               <Navbar products={products} />
               <TransitionLayout>
                 <main>{children}</main>
               </TransitionLayout>
               <Footer />
               <Toaster
-                position="bottom-right"
+                position="bottom-left"
                 toastOptions={{
-                  style: { background: '#111', color: '#fff', border: '1px solid #222', fontSize: '13px', borderRadius: '10px' },
-                  success: { iconTheme: { primary: '#22c55e', secondary: '#000' } },
+                  style: {
+                    background: 'var(--panel)',
+                    color: 'var(--text)',
+                    border: '1px solid var(--line)',
+                    borderRadius: '16px',
+                    fontSize: '13px',
+                    fontFamily: 'var(--sans)',
+                    boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
+                    padding: '12px 16px',
+                  },
+                  success: { iconTheme: { primary: 'var(--gold)', secondary: '#000' } },
                   error: { iconTheme: { primary: '#ef4444', secondary: '#000' } },
                 }}
               />
             </CartProvider>
             <CustomCursor />
           </SmoothScroll>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </body>
       </html>
     </ViewTransitions>
